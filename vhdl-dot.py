@@ -11,6 +11,7 @@ reserved = {
 	#'architecture' : 'ARCHITECTURE',
 	'component'	: 'COMPONENT',
 	'entity'	: 'ENTITY',
+	#'ENTITY'	: 'ENTITY',
 	'end'		: 'END',
 	'generate'  : 'GENERATE',
 	'is'		: 'IS',
@@ -38,6 +39,8 @@ reserved = {
 signalTypes = [
 	'std_ulogic',
 	'std_ulogic_vector',
+        'std_logic',
+	'std_logic_vector'
 	'STD_LOGIC',
 	'STD_LOGIC_VECTOR',
 	]
@@ -89,11 +92,26 @@ def t_newLine(t):
 # Match an identifier, or a reserved word
 def t_IDENTIFIER(t):
 	r'[a-zA-Z][a-zA-Z0-9_]*'
-	
+
+
+	# print("identifier: " + str(t.value))
+        
 	for sigType in signalTypes:
 		if t.value == sigType:
 			t.type = 'SIGTYPE'
 			return t
+
+
+	#if t.value == ENTITY
+	#	t.type = 'ENTITY'
+        #	return t
+
+        #debug
+	if t.value in reserved:
+		t.type = reserved[ t.value ]
+		#print ("reserved matched. Value: "+ str(t.value) + "Type: " + str(t.type))
+
+		return t
 	
 	t.type = reserved.get(t.value, 'IDENTIFIER')
 	return t
@@ -362,7 +380,7 @@ def p_error(p):
 		if tok.lineno != errLineNo:
 			yacc.errok()
 			return tok
-		else:
+		else:                        
 			tok = yacc.token()
 	
 # Build the parser
@@ -462,7 +480,7 @@ if len(sys.argv) > 1:
 		fileNames.append(sys.argv[i])
 else:
 	print ("Enter the name of the file to parse.")
-	t = input('>')
+	t = raw_input('>')
 	fileNames.append(t)
 
 for file in fileNames:
@@ -476,7 +494,7 @@ for file in fileNames:
 	print ("\tParsing file...")
         # debug
 	print ("fileContents: " + str(fileContents) + "\n")
-	result = yacc.parse(fileContents)
+	result = yacc.parse(fileContents,debug=1)
         # debug
 	print ("yacc.parse: " + str(result) + "\n")
 
