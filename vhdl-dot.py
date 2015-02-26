@@ -559,7 +559,7 @@ for results in parsedData:
 			logFile.write("\n")
 			logFile.write("Ident: " + statement.identifier + '\n')
 			inSignals = statement.inSignals
-			logFile.write("Inputs: \n")
+			logFile.write("Inputs: ")
 			for signal in inSignals:
 				logFile.write(signal.identifier + " ")
 			logFile.write('\n')

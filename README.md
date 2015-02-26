@@ -2,7 +2,7 @@
 vhdl-dot-resurrection
 
 Follows the notes down here.
-At the moment it works only with test2.vhd
+At the moment it works only with test2.vhd and test2_tb.vhd
 
 result = yacc.parse(fileContents,debug=1)
 
@@ -10,3 +10,4 @@ NOTE:
 	- does not support generate statements
 	- at the moment requires the keywords to be in small cases
 	- to be tested with components and generate statements
+	- requires entity <NAME> ... end <NAME>

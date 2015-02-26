@@ -173,7 +173,7 @@ class dotRenderer:
 		# Write the rootEntity output signals into a record
 		rootOutSignals = rootEntity.outSignals
 		if len(rootOutSignals) == 0:
-			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Outputs" + "|\"];")
+			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"" + rootEntity.identifier + " Outputs" + "\"];")
 		elif len(rootOutSignals) == 1:
 			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Outputs |" + " <" + rootOutSignals[0].identifier + "> " + rootOutSignals[0].identifier +"}\" ];\n")
 		elif len(rootOutSignals) > 1:
