@@ -24,3 +24,19 @@ NOTE:
 
 	      -> is it possible to connect ports directly to components without
 	      having to go through signals?
+
+# General commands and use guide
+
+python vhdl-dot.py hier_test.vhd
+dot -Tpdf ier_test.dot -o ier_test.pdf
+
+if using emacs as editor to show pdf, use M-x auto-revert-mode to update pdf every time it changes
+
+# Comments and notes for future:
+
+* Ports are rectangles, octagons are signals
+* Update to pygraphviz, as George did for f2dot?
+* Take insp from f2dot
+* COMPLETE THIS README WITH COMMENTS FROM PAPER
+
+

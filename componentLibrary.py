@@ -21,13 +21,19 @@ class dotRenderer:
 				code.append("{}")
 			elif len(inSignals) == 1:
 				code.append("{<"+inSignals[0].identifier+"> " + inSignals[0].identifier + "}")
-			elif len(inSignals) > 1:
+			elif len(inSignals) == 2:
+				lastIndex = len(inSignals)-1
+				# Write the first signal
+				code.append("{<"+inSignals[0].identifier+"> " + inSignals[0].identifier + " | ")
+				# Write the last signal
+				code.append("<"+inSignals[lastIndex].identifier+"> " + inSignals[lastIndex].identifier + "}")
+			elif len(inSignals) > 2:
 				lastIndex = len(inSignals)-1
 				# Write the first signal
 				code.append("{<"+inSignals[0].identifier+"> " + inSignals[0].identifier + " | ")
 				# Write the middle signal(s) if any
-				for i in range(1, lastIndex):
-					code.append("<"+inSignals[i].identifier+"> " + inSignals[i].identifier + " | ")
+				for i in range(0, lastIndex-1):
+					code.append("<"+inSignals[i+1].identifier+"> " + inSignals[i+1].identifier + " | ")
 				# Write the last signal
 				code.append("<"+inSignals[lastIndex].identifier+"> " + inSignals[lastIndex].identifier + "}")
 				
@@ -39,13 +45,19 @@ class dotRenderer:
 				code.append("{}")
 			elif len(outSignals) == 1:
 				code.append("{<"+outSignals[0].identifier+"> " + outSignals[0].identifier + "}")
-			elif len(outSignals) > 1:
+			elif len(outSignals) == 2:
+				lastIndex = len(outSignals)-1
+				# Write the first signal
+				code.append("{<"+outSignals[0].identifier+"> " + outSignals[0].identifier + " | ")
+				# Write the last signal
+				code.append("<"+outSignals[lastIndex].identifier+"> " + outSignals[lastIndex].identifier + "}")
+			elif len(outSignals) > 2:
 				lastIndex = len(outSignals)-1
 				# Write the first signal
 				code.append("{<"+outSignals[0].identifier+"> " + outSignals[0].identifier + " | ")
 				# Write the middle signal(s) if any
-				for i in range(1, lastIndex):
-					code.append("<"+outSignals[i].identifier+"> " + outSignals[i].identifier + " | ")
+				for i in range(0, lastIndex):
+					code.append("<"+outSignals[i+1].identifier+"> " + outSignals[i+1].identifier + " | ")
 				# Write the last signal
 				code.append("<"+outSignals[lastIndex].identifier+"> " + outSignals[lastIndex].identifier + "}")
 			
@@ -99,13 +111,19 @@ class dotRenderer:
 			file.write(rootEntity.identifier + "Inputs" + " [ shape=record, label=\"" + rootEntity.identifier + " Inputs" + "\"];")
 		elif len(rootInSignals) == 1:
 			file.write(rootEntity.identifier + "Inputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Inputs |" + " <" + rootInSignals[0].identifier + "> " + rootInSignals[0].identifier +"}\" ];\n")
-		elif len(rootInSignals) > 1:
+		elif len(rootInSignals) == 2:
+			lastIndex = len(rootInSignals)-1
+			# Write the first input signal
+			file.write(rootEntity.identifier + "Inputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Inputs |" + " <" + rootInSignals[0].identifier + "> " + rootInSignals[0].identifier + " | ")
+			# Write the final input signal
+			file.write(" <" + rootInSignals[lastIndex].identifier + "> " + rootInSignals[lastIndex].identifier + "}\" ];\n")
+		elif len(rootInSignals) > 2:
 			lastIndex = len(rootInSignals)-1
 			# Write the first input signal
 			file.write(rootEntity.identifier + "Inputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Inputs |" + " <" + rootInSignals[0].identifier + "> " + rootInSignals[0].identifier + " | ")
 			# Write the middle input signals, if any
-			for i in range(1,len(rootInSignals)):
-				file.write(" <" + rootInSignals[i].identifier + "> " + rootInSignals[i].identifier + " | ")
+			for i in range(0,(lastIndex-1)):
+				file.write(" <" + rootInSignals[i+1].identifier + "> " + rootInSignals[i+1].identifier + " | ")
 			# Write the final input signal
 			file.write(" <" + rootInSignals[lastIndex].identifier + "> " + rootInSignals[lastIndex].identifier + "}\" ];\n")
 		
@@ -115,7 +133,7 @@ class dotRenderer:
 		
 		# Create all of the signals
 		for s in signalDefinitions:
-			file.write(s.identifier + "[shape=rectangle,label=\""+s.identifier+"\" ];\n")
+			file.write(s.identifier + "[shape=octagon,label=\""+s.identifier+"\" ];\n")
 		
 		for s in rootEntity.inSignals:
 			file.write(s.identifier + "[shape=rectangle, label=\""+s.identifier+"\" ];\n")
@@ -176,13 +194,19 @@ class dotRenderer:
 			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"" + rootEntity.identifier + " Outputs" + "\"];")
 		elif len(rootOutSignals) == 1:
 			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Outputs |" + " <" + rootOutSignals[0].identifier + "> " + rootOutSignals[0].identifier +"}\" ];\n")
-		elif len(rootOutSignals) > 1:
+		elif len(rootOutSignals) == 2:
+			lastIndex = len(rootOutSignals)-1
+			# Write the first input signal
+			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Outputs |" + " <" + rootOutSignals[0].identifier + "> " + rootOutSignals[0].identifier + " | ")
+			# Write the final input signal
+			file.write(" <" + rootOutSignals[lastIndex].identifier + "> " + rootOutSignals[lastIndex].identifier + "}\" ];\n")
+		elif len(rootOutSignals) > 2:
 			lastIndex = len(rootOutSignals)-1
 			# Write the first input signal
 			file.write(rootEntity.identifier + "Outputs" + " [ shape=record, label=\"{" + rootEntity.identifier + " Outputs |" + " <" + rootOutSignals[0].identifier + "> " + rootOutSignals[0].identifier + " | ")
 			# Write the middle input signals, if any
-			for i in range(1,len(rootOutSignals)):
-				file.write(" <" + rootOutSignals[i].identifier + "> " + rootOutSignals[i].identifier + " | ")
+			for i in range(0,(lastIndex-1)):
+				file.write(" <" + rootOutSignals[i+1].identifier + "> " + rootOutSignals[i+1].identifier + " | ")
 			# Write the final input signal
 			file.write(" <" + rootOutSignals[lastIndex].identifier + "> " + rootOutSignals[lastIndex].identifier + "}\" ];\n")
 		
