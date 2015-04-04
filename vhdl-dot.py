@@ -201,7 +201,8 @@ def p_entity(p):
 		p[0] = vhdl.component(ident)
 		return
 		
-	#Organize the signals
+	# Organize the signals
+	# NOTE: inout ports not supported at the moment
 	for signal in p[4]:
 		if signal.type == 'in':
 			inSignals.append(signal)
@@ -218,7 +219,9 @@ def p_entity(p):
 def p_portDef(p):
 	'portDef : PORT LPAREN signalDeclarationList RPAREN SCOLON'
 	p[0] = p[3]
-	
+
+# QUESTION: who uses this signalassign?
+#
 # signalAssign : signal connection lE
 def p_signalAssign2(p):
 	'signalAssign : signal connection lE'
@@ -259,6 +262,8 @@ def p_signalAssignList(p):
 	# Push the signals up the tree
 	p[0] = signalAssignments
 
+# signalDeclarationList : identifierList COLON signalDirection signalType SCOLON signalDeclarationList
+#							 | identifierList COLON signalDirection signalType
 def p_signalDeclarationList(p):
 	'''signalDeclarationList : identifierList COLON signalDirection signalType SCOLON signalDeclarationList
 							 | identifierList COLON signalDirection signalType'''
@@ -310,6 +315,7 @@ def p_signalDeclaration(p):
 	
 # connection : =>
 #			 | <=
+# DANGER: THIS RULE IS COMPLETELY WRONG!
 def p_connection(p):
 	'''connection : CONNECTION_OUT
 				  | CONNECTION_IN'''
@@ -353,7 +359,13 @@ def p_lE(p):
 			p[0] = p[1] + " " + p[2] + " " + p[3]
 	else:
 		raise Exception("Invalid argument length to rule lE")
-		
+
+# lOp : AND
+#			| OR
+#			| XOR
+#			| NOR
+#			| XNOR
+#			| NAND        
 def p_lOp(p):
 	'''lOp : AND
 			| OR
@@ -393,7 +405,9 @@ yacc.yacc()
 
 import sys	
 
-# Function definitions
+#####################################################################################
+## Function definitions
+#####################################################################################
 
 def flatten(x):
     if isinstance(x, list):
@@ -401,6 +415,8 @@ def flatten(x):
     else:
         return [x]
 
+# NOTE: the following function seems to be outdated if compared with the one
+# defined in componentLibrary. Maybe we can remove the following function.
 def generateDotFile(componentTemplates, signalDefinitions, signalAssignments, portMaps, outputName='temp.dot'):
 		
 	# Create a dictionary of the defined components

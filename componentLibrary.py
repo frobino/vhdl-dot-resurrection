@@ -1,12 +1,21 @@
-#Data structures for the VHDL parser
+# Data structures for the VHDL parser
+
+# Definition of different classes
 
 import random
+
+#####################################################################################
+## class dotRenderer
+#####################################################################################
 
 class dotRenderer:
 	
 	def __init__(self):
 		self.built = True
-		
+
+        # This method is used to create the rectangular structure of entity/components
+        # (not the lines connecting the rectangles, they are created through portmaps in
+        # generateDotcode method)
 	def generatePortMapDotCode(self, componentDict, portMaps):
 		code = []
 		
@@ -16,7 +25,7 @@ class dotRenderer:
 			outSignals = componentDict[pm.componentName].outSignals
 			
 			code.append(pm.identifier + " [shape=record,label=\"{" + pm.identifier+"|{")
-			# Draw the input signals
+			# Draw the input ports
 			if len(inSignals) == 0:
 				code.append("{}")
 			elif len(inSignals) == 1:
@@ -40,7 +49,7 @@ class dotRenderer:
 			# Draw the component name
 			code.append(" | " + pm.componentName + " | ")
 			
-			# Draw the output signals
+			# Draw the output ports
 			if len(outSignals) == 0:
 				code.append("{}")
 			elif len(outSignals) == 1:
@@ -215,6 +224,9 @@ class dotRenderer:
 		# Write to the file
 		file.close()
 		
+#####################################################################################
+## class component
+#####################################################################################
 		
 class component:
 	
@@ -222,6 +234,10 @@ class component:
 		self.identifier = arg_identifier
 		self.inSignals = arg_inSignals
 		self.outSignals = arg_outSignals
+
+#####################################################################################
+## class signal
+#####################################################################################
 		
 class signal:
 
@@ -230,6 +246,10 @@ class signal:
 		self.type = arg_type
 		self.leftLinks = arg_leftLinks
 		self.rightLinsk = arg_rightLinks
+
+#####################################################################################
+## class signalAssignment
+#####################################################################################
 		
 class signalAssignment:
 
@@ -237,6 +257,10 @@ class signalAssignment:
 		self.left = arg_LHS
 		self.right = arg_RHS
 		self.direction = arg_Dir
+
+#####################################################################################
+## class portMap
+#####################################################################################
 		
 class portMap:
 	

@@ -8,13 +8,13 @@ It also works with hier_test.vhd (test components).
 result = yacc.parse(fileContents,debug=1)
 
 NOTE:
-	- does not support generate statements
-	- at the moment requires the keywords to be in small cases
-	- to be tested with generate statements
-	- ENTITY DECLARATION:
+	* does not support generate statements
+	* at the moment requires the keywords to be in small cases
+	* to be tested with generate statements
+	* ENTITY DECLARATION:
 	  requires entity <NAME> ... end <NAME>
 	     -> can the parser be modified to support this?
-	- COMPONENT DECLARATION:
+	* COMPONENT DECLARATION:
 	  requires G1 : INV port map (A => A_s, F => F_s);
 	  For example, G1 : INV port map (A_s, F_s); is not supported.
 	     -> can the parser be modified to support this?
@@ -24,6 +24,7 @@ NOTE:
 
 	      -> is it possible to connect ports directly to components without
 	      having to go through signals?
+	* inout ports are not supported
 
 # General commands and use guide
 
@@ -38,5 +39,5 @@ if using emacs as editor to show pdf, use M-x auto-revert-mode to update pdf eve
 * Update to pygraphviz, as George did for f2dot?
 * Take insp from f2dot
 * COMPLETE THIS README WITH COMMENTS FROM PAPER
-
+* Careful, sometime signal is used instead of ports...
 
