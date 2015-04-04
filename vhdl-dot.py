@@ -1,6 +1,7 @@
 # VHDL Graph creator
 # Parser
 
+# Our componentLibrary.py file, containing classes declaration
 import componentLibrary as vhdl
 
 #***** LEXER *****
@@ -162,7 +163,8 @@ def p_statement(p):
 				 | signalAssign SCOLON
 				 | portMap'''
 	p[0] = p[1]
-
+	
+# statementerror
 def p_statementerror(p):
 	'statement : error'
 	pass
@@ -467,12 +469,28 @@ def generateDotFile(componentTemplates, signalDefinitions, signalAssignments, po
 		
 	file.write("}\n")
 
-# Choose input source (prompt or batch from command line argument)
+#####################################################################################
+## Main starts here
+#####################################################################################
 
-# Store the parsed output to parsedData then at the end loop through and analyze them
+## Steps: 
+
+## 1] Choose input source (prompt or batch from command line argument)
+
+## 2] Parse each file provided as input source, and store in parsedData
+
+## 3] Loop through parsedData and create the data structure which will be used to
+##    generate .dot file
+
+## 4] call generateDotCode or generateDotFile to create .dot files from data strucure
+##    previously initialized
+
+#####################################################################################
 
 parsedData = []
 fileNames = []
+
+## Step 1
 
 if len(sys.argv) > 1:
 	print ("Reading files specified by command line parameters...")
@@ -483,6 +501,8 @@ else:
 	t = raw_input('>')
 	fileNames.append(t)
 
+## Step 2
+        
 for file in fileNames:
 	print ("File: " + str(file))
 	fileContents = ''
@@ -513,6 +533,7 @@ for file in fileNames:
 
 	print ("parsedData: " + str(parsedData) + "\n")
 
+       
 for results in parsedData:
 	fileName = results[0]
 	
@@ -526,6 +547,8 @@ for results in parsedData:
 	signalDefinitions = []
 	signalAssignments = []
 	portMaps = []
+
+        ## Step 3
 
 	# Fill the data structures
 	for statement in r:
@@ -541,14 +564,21 @@ for results in parsedData:
 		# Port maps
 		elif isinstance(statement, vhdl.portMap):
 			portMaps.append(statement)
-			
-	
+
+        ## Step 4
 			
 	renderer = vhdl.dotRenderer()
+
+        ## NOTE: the following generateDotCode function comes from componentLibrary (most updated) 
 	renderer.generateDotCode(rootEntity, componentTemplates, signalDefinitions, signalAssignments, portMaps, outputName)
 	
+	## NOTE: the following generateDotFile function was defined ealier in this file (older) 
 	#generateDotFile(componentTemplates, signalDefinitions, signalAssignments, portMaps, outputName)
 
+#####################################################################################
+## logfile generation starts here
+#####################################################################################
+        
 	logFile = open(logFileName, 'w')
 
 	print ("Writing parse data of " + fileName + " to log file " + logFileName + " ...")
