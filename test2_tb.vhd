@@ -35,4 +35,4 @@ begin
     p_Clk => p_Clk,
     p_Rst => p_Rst);
 
-end behavioral_test_tb;
+end behavioral_test2_tb;

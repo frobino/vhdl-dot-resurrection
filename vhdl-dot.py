@@ -41,7 +41,7 @@ signalTypes = [
 	'std_ulogic',
 	'std_ulogic_vector',
         'std_logic',
-	'std_logic_vector'
+	'std_logic_vector',
 	'STD_LOGIC',
 	'STD_LOGIC_VECTOR',
 	]
