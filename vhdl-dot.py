@@ -4,7 +4,9 @@
 # Our componentLibrary.py file, containing classes declaration
 import componentLibrary as vhdl
 
-#***** LEXER *****
+#####################################################################################
+## LEXER
+#####################################################################################
 #from ply import lex
 
 # Reserved word defenitions { value : key, ... }
@@ -126,7 +128,9 @@ import ply.lex as lex
 
 lex.lex()
 
-#***** PARSER *****
+#####################################################################################
+## PARSER
+#####################################################################################
 
 # file : statementList
 def p_file(p):
@@ -182,12 +186,17 @@ def p_component(p):
 			inSignals.append(signal)
 		elif signal.type == 'out':
 			outSignals.append(signal)
+                # TBD: add support for inout signals
 		else:
 			raise Exception("Invalid signal type.")
 			
 	#Create the component
 	p[0] = vhdl.component(ident, inSignals, outSignals)
-	
+
+# TBD: add here support for component instantiated as work.<comp_name>,
+#      so that we can add it p[0] = vhdl.component(ident, inSignals, outSignals)
+#      Fake the directions of IO when work.<comp_name>
+        
 # entity : ENTITY IDENTIFIER IS portDef END IDENTIFIER ;
 def p_entity(p):
 	'''entity : ENTITY IDENTIFIER IS portDef END IDENTIFIER SCOLON
@@ -220,7 +229,9 @@ def p_portDef(p):
 	'portDef : PORT LPAREN signalDeclarationList RPAREN SCOLON'
 	p[0] = p[3]
 
-# QUESTION: who uses this signalassign?
+# TBD: QUESTION: who uses this signalassign?
+#      Try to stimulate the exception to understand...
+# NOTE: connected to the "connection" wrong rule...
 #
 # signalAssign : signal connection lE
 def p_signalAssign2(p):
@@ -315,7 +326,10 @@ def p_signalDeclaration(p):
 	
 # connection : =>
 #			 | <=
-# DANGER: THIS RULE IS COMPLETELY WRONG!
+# TDB: DANGER: THIS RULE IS COMPLETELY WRONG!
+#      The => or <= differs depending on where they are used.
+#      They do not necessarily mean INPUT or OUTPUT connections!
+#      MUST be improved with correct grammar!
 def p_connection(p):
 	'''connection : CONNECTION_OUT
 				  | CONNECTION_IN'''
@@ -401,22 +415,26 @@ def p_error(p):
 import ply.yacc as yacc
 yacc.yacc()
 	
-#*****MAIN*****#
-
-import sys	
-
 #####################################################################################
 ## Function definitions
 #####################################################################################
 
+import sys	
+
+## flatten function
+#
 def flatten(x):
     if isinstance(x, list):
         return [a for i in x for a in flatten(i)]
     else:
         return [x]
 
-# NOTE: the following function seems to be outdated if compared with the one
+## generateDotFile function
+#
+# TBD: NOTE: the following function seems to be outdated if compared with the one
 # defined in componentLibrary. Maybe we can remove the following function.
+#
+# This deprecated function can and should be moved to another file
 def generateDotFile(componentTemplates, signalDefinitions, signalAssignments, portMaps, outputName='temp.dot'):
 		
 	# Create a dictionary of the defined components
@@ -496,7 +514,7 @@ def generateDotFile(componentTemplates, signalDefinitions, signalAssignments, po
 ## 2] Parse each file provided as input source, and store in parsedData
 
 ## 3] Loop through parsedData and create the data structure which will be used to
-##    generate .dot file
+##    generate .dot file (very IMPORTANT!)
 
 ## 4] call generateDotCode or generateDotFile to create .dot files from data strucure
 ##    previously initialized

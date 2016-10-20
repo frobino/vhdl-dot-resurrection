@@ -39,6 +39,5 @@ if using emacs as editor to show pdf, use M-x auto-revert-mode to update pdf eve
 * Ports are rectangles, octagons are signals
 * Update to pygraphviz, as George did for f2dot?
 * Take insp from f2dot
-* COMPLETE THIS README WITH COMMENTS FROM PAPER
 * Careful, sometime signal is used instead of ports...
 

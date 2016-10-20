@@ -1,6 +1,11 @@
 # Data structures for the VHDL parser
-
-# Definition of different classes
+#
+# Includes the following classes:
+# - dotRenderer
+# - component
+# - signal
+# - signalAssignment
+# - portMap
 
 import random
 
@@ -9,13 +14,20 @@ import random
 #####################################################################################
 
 class dotRenderer:
-	
+
 	def __init__(self):
 		self.built = True
 
         # This method is used to create the rectangular structure of entity/components
         # (not the lines connecting the rectangles, they are created through portmaps in
         # generateDotcode method)
+        #
+        #   +--------------------+
+        #   |                    |
+        #   +----+----------+----+
+        #   |    |          |    |
+        #   +----+----------+----+
+        #
 	def generatePortMapDotCode(self, componentDict, portMaps):
 		code = []
 		
